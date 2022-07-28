@@ -1,0 +1,19 @@
+# Conclusion
+
+We investigated frequent mental distress as a health outcome based on the four health factors including health behaviors, clinical care, social and economic factors, and physical environment. We selected 6 different health measures from these factors to analyze their correlation to mental health/mental distress.
+
+Health Behaviors:
+Adult Obesity 
+Insufficient Sleep
+
+Clinical Care:
+Uninsured Adults
+
+Social and Economic Factors:
+Social Associations
+Median Household Income
+
+Physical Environment:
+Severe Housing Problems
+
+We found that obesity, insufficient sleep, severe housing problems, social associations, and median household income have a strong correlation to the amount of frequent mental distress. Having health insurance or not didn't seem to effect the prevalence of frequent mental distress nearly as much as we expected. Not having health insurance seems to be something that would cause large amounts of stress for individuals and we expected this to have a significant impact on mental health. However it is clear how measures such as insufficient sleep and obesity can be the result of and also the cause of poor mental health. Across all 6 of our selected health measures we can see how stress levels, physical health, and personal habits are important for one's mental health.

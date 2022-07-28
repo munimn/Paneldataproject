@@ -1,0 +1,10 @@
+# Introduction
+
+We are going to be exploring different factors that contribute to frequent mental distress in the United States from 2019-2021. 21% of U.S. adults experienced mental illness in 2020 (52.9 million people) according to the National Alliance on Mental Illness. This represents 1 in 5 adults. There are countless stressors and causes of mental illness and we are going to be investigating 6 specific measures in relation to frequent mental distress. The health factors that we will be discussing in this article include the adult obesity percentage, percentage of people getting insufficient sleep, percent of uninsured adults, social associations, median household income, and the percentage of people facing severe housing problems. For clarification, social associations will be used to measure contact with others and involvement in the community.
+
+One of the most prevalent types of mental distress is depression. People with depression have a 40% higher risk of developing cardiovascular and metabolic disease when compared to those not experiencing depression. Additionally, those with mental illness are also more likely to be unemployed than the general population (6.5% compared to 5.1) [^1].
+
+After analyzing our data we found that obesity, insufficient sleep, severe housing problems, social associations, and median household income all have a strong correlation to the amount of frequent mental distress. There was limited evidence that having health insurance or not had a significant impact on frequent mental distress. As an example, higher rates of obesity and severe housing problems are correlated with higher rates of frequent mental distress. On the other hand, higher statistics of social associations is correlated with lower rates of frequent mental distress. 
+
+
+[^1]: Mental health by the numbers. NAMI. (n.d.). https://www.nami.org/mhstats 

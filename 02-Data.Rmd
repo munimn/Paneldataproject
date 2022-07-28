@@ -1,0 +1,264 @@
+# Data
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(include = TRUE, echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+```{r Initial Code, include=FALSE}
+library(readxl)
+library(tidyverse)
+library(readr)
+library(leaflet)
+library(rmapshaper)
+library(tidycensus)
+library(RColorBrewer)
+library(stargazer)
+library(plm)
+library(grid)
+library(gridExtra)
+options(tigris_use_cache = TRUE)
+```
+
+```{r}
+
+
+variables <- read_excel("Variables for PP.xlsx")
+
+
+
+full_data2021 <- read_csv("https://www.countyhealthrankings.org/sites/default/files/media/document/analytic_data2021.csv", skip = 1)
+
+full_data2019 <- read_csv("https://www.countyhealthrankings.org/sites/default/files/media/document/analytic_data2019.csv", skip = 1)
+
+full_data2020 <- read_csv("https://www.countyhealthrankings.org/sites/default/files/media/document/analytic_data2020_0.csv", skip = 1)
+```
+
+```{r}
+data2021 <- full_data2021 %>%
+  select(c(variables$`variable code`,statecode,countycode,fipscode,state,county,year)) %>%
+  filter(countycode != "000")
+
+data2019 <- full_data2019 %>%
+  select(c(variables$`variable code`,statecode,countycode,fipscode,state,county,year)) %>%
+  filter(countycode != "000")
+
+data2020 <- full_data2020 %>%
+  select(c(variables$`variable code`,statecode,countycode,fipscode,state,county,year)) %>%
+  filter(countycode != "000")
+
+FullData <- rbind(data2021, data2019, data2020)
+colnames(FullData) <- c("pct_mental_distress","pct_adult_obese","pct_insufficient_sleep","pct_uninsured_adults","social_assoct","median_household_income","pct_housing_prob","statecode","countycode","fipscode","state","county","year")
+```
+
+```{r}
+# County geometric data
+
+countyGIS <- get_acs(
+  geography = "county",
+  variables = "B01001_001",
+  geometry = TRUE,
+  keep_geo_vars = TRUE
+)
+
+# State geometric data
+stateGIS <- get_acs(
+  geography = "state",
+  variables = "B01001_001",
+  geometry = TRUE,
+  keep_geo_vars = FALSE
+)
+
+
+## Simplify GIS data to make file sizes smaller. This essentially removes some details along coastlines and very-not-straight borders.
+stateGIS <- ms_simplify(stateGIS, keep = 0.01)
+countyGIS <- ms_simplify(countyGIS, keep = 0.01)
+
+countyGIS <- countyGIS %>%
+  select(
+    FIPS = GEOID,
+    stFIPS = STATEFP,
+    coFIPS = COUNTYFP,
+    coNAME = NAME.x,
+    geometry
+  )
+
+## join 2-character state abbreviation and create name = county, ST for labeling maps
+fipsToSTcode <- fips_codes %>%
+  unite("FIPS", state_code, county_code, sep = "", remove = FALSE) %>%
+  select(FIPS, stFIPS = state_code, stNAME = state)
+
+GIS <- inner_join(countyGIS, fipsToSTcode, by = c("FIPS", "stFIPS"))
+GIS <- GIS %>% mutate(name = paste0(coNAME, ", ", stNAME))
+
+stateGIS <- stateGIS %>% filter(GEOID != "72" & GEOID != "02" & GEOID != "15")
+GIS <- GIS %>% filter(stFIPS != "02" & stFIPS != "15")
+```
+
+```{r include=FALSE}
+# dataframe of all missing cases
+missing_values <- FullData %>%
+  filter(!complete.cases(FullData))
+```
+
+```{r}
+unique_missing_county <- missing_values %>%
+  distinct(fipscode, state, county) # Might need to control for pop, very small counties
+
+# dataframe with completed cases for three years
+FullData<- FullData %>% filter(!(fipscode %in% unique_missing_county$fipscode))
+
+```
+
+```{r}
+#percentage from 1 to 100
+
+FullData<-FullData %>%
+  mutate(median_income_inthousand=median_household_income/1000,
+         pct_mental_distress = pct_mental_distress *100,
+         pct_adult_obese = pct_adult_obese*100,
+         pct_insufficient_sleep = pct_insufficient_sleep *100,
+         pct_uninsured_adults = pct_uninsured_adults*100,
+         pct_housing_prob = pct_housing_prob*100,
+       ) %>%
+  select(-c(median_household_income, countycode, state, county))
+```
+
+
+```{r}
+map2019 <- FullData %>%
+  filter(year == "2019") 
+map2020 <- FullData %>%
+  filter(year == "2020")
+map2021 <- FullData %>%
+  filter(year == "2021")
+
+map2019 <- inner_join(GIS, map2019, by = c("FIPS" = "fipscode"))
+map2020 <- inner_join(GIS, map2020, by = c("FIPS" = "fipscode"))
+map2021 <- inner_join(GIS, map2021, by = c("FIPS" = "fipscode"))
+
+```
+
+```{r}
+popup1 <- function(dataset) {
+  return(
+    paste0(
+      "<b>", dataset$name, " (", dataset$FIPS, ")</b>",
+      "<br><font color='red'>Frequent Mental Distress: ",
+      format(dataset$pct_mental_distress, digits = 2), "%","</font>",
+      
+      "<br>Adult Obesity: ",
+      format(dataset$pct_adult_obese, digits = 2), "%",
+      
+      "<br>Insufficient Sleep: ",
+      format(dataset$pct_insufficient_sleep, digits = 2), "%",
+      
+      "<br>Uninsured Adults: ",
+      format(dataset$pct_uninsured_adults, digits = 2), "%",
+      
+      "<br>Social Associations: ",
+      format(dataset$social_assoct, digits = 2), "%",
+      
+      "<br>Severe Housing Problem: ",
+      format(dataset$pct_housing_prob, digits = 2), "%",
+  
+      "<br>Median income ($000): ",
+      format(dataset$median_income_inthousand, nsmall = 3)
+    ) %>%
+      lapply(htmltools::HTML)
+  )
+}
+```
+
+The data that we are working with comes from the [County Health Rankings and Roadmaps](http://www.countyhealthrankings.org/explore-health-rankings/rankings-data-documentation) program. In our investigation we are going to be looking at measures from 4 different health factors and their correlation to frequent mental distress. These factors include health behaviors, clinical care, social and economic factors, and physical environment. We are going to be investigating the reported frequent mental distress and this measure comes from the percentage of adults reporting 14 or more days of poor mental health per month
+(age-adjusted). We are going to be looking at the United States by counties. We have removed the Kalawao County, Hawaii from the data due to missing values across all 3 years we are looking at. 
+
+Health behaviors are actions that individuals take that positively and negatively affect their health and welfare. An example of a health behavior that leads to improved health would be physical activity. An example of a health behavior that negatively impacts one's health would be excessive alcohol intake. We are going to be discussing two health behavior measures. The first is [adult obesity](https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/health-behaviors/diet-exercise/adult-obesity) which measures the percentage of the adult population (age 20 and older) that reports a body mass index (BMI) greater than or equal to 30 kg/m2. Obesity has been found The second measure is [insufficient sleep](https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/health-behaviors/insufficient-sleep) which measures the percentage of adults who report fewer than 7 hours of sleep on average (age-adjusted).
+
+The second health factor that we will be investigating is clinical care. Access to affordable, quality, and timely health care is important for one's physical health and we will be investigating whether or not it is also correlated to mental health and prevalence of mental distress. The health measure that we are going to be discussing from the clinical care health factor is [uninsured adults](https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/clinical-care/access-to-care/uninsured-adults). This measures the percentage of adults under age 65 without health insurance. 
+
+The third health factor used by the County Health Rankings program is social and economic factors which include income, education, employment, community safety, and social supports. For this health factor we are going to be looking at the [social associations](https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/social-and-economic-factors/family-social-support/social-associations) measure and the [median household income](https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/social-and-economic-factors/income/median-household-income). The social associations measure represents the number of membership associations per 10,000 population. This is a rough estimate of the amount of social interaction people have. The median household income measures the income where half of households in a county earn more and half of households earn less. 
+
+Finally, we are going to be working with one  measure from the physical environment health factor which represents the physical environment where individuals live, learn, work, and play. The measure we are going to be discussing is the amount of [severe housing problems](https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/physical-environment/housing-transit/severe-housing-problems). This represents the percentage of households with at least 1 of 4 housing problems: overcrowding, high housing costs, lack of kitchen facilities, or lack of plumbing facilities.
+
+```{r}
+pal <- colorBin("Greens", map2019$pct_mental_distress,bins = c(8,10,12,14,16,18,20,25,30) , reverse=TRUE)
+
+leaflet(map2019, options = leafletOptions(crsClass = "L.CRS.EPSG3857"), width="100%") %>%
+  
+  addPolygons(weight = 0.5, color = "gray", opacity = 0.7,
+    fillColor = ~pal(pct_mental_distress), fillOpacity = 1, smoothFactor = 0.5,
+    label = popup1(map2019),
+    labelOptions = labelOptions(direction = "auto"))%>%
+ addPolygons(data = stateGIS,fill = FALSE,color="black",weight = 1) %>%
+    addLegend(pal = pal,values = ~map2019$pct_mental_distress, opacity = 0.7, title = "% Mental Distress(2019)",position = "bottomright")
+```
+
+```{r}
+pal <- colorBin("Greens", map2020$pct_mental_distress,bins = c(8,10,12,14,16,18,20,25,30) , reverse=TRUE)
+
+leaflet(map2020, options = leafletOptions(crsClass = "L.CRS.EPSG3857"), width="100%") %>%
+  
+  addPolygons(weight = 0.5, color = "gray", opacity = 0.7,
+    fillColor = ~pal(pct_mental_distress), fillOpacity = 1, smoothFactor = 0.5,
+    label = popup1(map2020),
+    labelOptions = labelOptions(direction = "auto"))%>%
+ addPolygons(data = stateGIS,fill = FALSE,color="black",weight = 1) %>%
+    addLegend(pal = pal,values = ~map2020$pct_mental_distress, opacity = 0.7, title = "% Mental Distress(2020)",position = "bottomright")
+```
+
+```{r}
+pal <- colorBin("Greens", map2021$pct_mental_distress,bins = c(8,10,12,14,16,18,20,25,30) , reverse=TRUE)
+
+leaflet(map2021, options = leafletOptions(crsClass = "L.CRS.EPSG3857"), width="100%") %>%
+  addPolygons(weight = 0.5, color = "gray", opacity = 0.7,
+    fillColor = ~pal(pct_mental_distress), fillOpacity = 1, smoothFactor = 0.5,
+    label = popup1(map2021),
+    labelOptions = labelOptions(direction = "auto")) %>%
+    addPolygons(data = stateGIS,fill = FALSE,color="black",weight = 1) %>%
+    addLegend(pal = pal,values = ~map2021$pct_mental_distress, opacity = 0.7, title = "% Mental Distress(2021)",position = "bottomright")
+```
+
+As you can see in the plots above we have plotted the different health measures for each county. You are able to see the percentage of frequent mental distress as well as the 6 measures that we are interested in. Over the 2 year period (2019-2021) we can see that the entire nation has faced drastic increases in frequent mental distress. In 2019 the Midwest seems to face less prevalence of frequent mental distress than other regions of the country. On the other hand, the South East (East South Central) region has significantly higher rates of frequent mental distress in 2019 and similarly to the other regions, mental health further declines over the next 2 years. 
+
+```{r Histogram, echo=FALSE}
+ggplot(FullData, aes(x = pct_mental_distress, fill = factor(year))) +
+  geom_histogram(position = "identity", color = "black") +
+  facet_wrap(~year, nrow = 3) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  labs(
+    title = "Distribution of Frequent Mental Distress Percentage , faceted by year", caption = "Percentage of adults reporting 14 or more days of poor mental health per month (age-adjusted).
+", x = "Mental Distress %",
+    fill = "Year"
+  )
+```
+
+In the distribution faceted graph we can see that frequent mental distress has gone up over the 2 year period. The distributions are all symmetrical and evenly distributed. The mean appears to increase by 2 to 3 percentage points over the 2 year period.
+
+```{r}
+mental19<-FullData %>%
+  filter(year==2019) %>%
+  select(fipscode,pct_mental_distress)
+mental21<-FullData %>%
+  filter(year==2021) %>%
+  select(fipscode,pct_mental_distress)
+
+mental_distress<-left_join(mental19,mental21,by="fipscode",suffix=c(".2019",".2021")) %>%
+      mutate(change_pct_mental_distress=pct_mental_distress.2021-pct_mental_distress.2019) %>%
+      mutate(value=ifelse(change_pct_mental_distress>0,"Pos","Neg"))
+
+ggplot(mental_distress,aes(x=pct_mental_distress.2019,y=change_pct_mental_distress))+
+  geom_segment(aes(x=pct_mental_distress.2019,xend=pct_mental_distress.2019,y=0,yend=change_pct_mental_distress,color=value),size=1.3,alpha=0.7)+
+  theme_light() +
+  theme(
+    legend.position = "none",
+    panel.border = element_blank(),
+  )+labs(
+    title = "Plot of Two Year Change in percentage of Mental Distress", caption = "Percentage of adults reporting 14 or more days of poor mental health per month (age-adjusted)", 
+    x = "Mental Distress Percentage in 2019",
+    y = "Two Year Change in percentage of Mental Distress")+
+  theme(legend.position = "none")
+```
+
+As you can see in the graph, the percentage of frequent mental distress decreased in a small number of counties (Oglala Lakota, Mora County, Menominee County, Corson County, Falls Church County, Arlington County, Clay County, Ziebach County). We can see from this plot that a vast majority of counties had significant increases in the prevalence of frequent mental distress over the 2 year period.
+

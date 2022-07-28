@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Results | Panel data project</title>
+  <meta name="description" content="Chapter 4 Results | Panel data project" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Results | Panel data project" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Results | Panel data project" />
+  
+  
+  
+
+<meta name="author" content="Nafis Ahmed Munim" />
+
+
+<meta name="date" content="2022-07-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data.html"/>
+<link rel="next" href="conclusion.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Panel Data</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Panel Data Project</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a></li>
+<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>5</b> Conclusion</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Panel data project</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="results" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Results<a href="results.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>As previously you have seen the maps of United States according to the Frequent Mental Distress Percentage, in the years 2019,2020 and 2021. You have also seen the factors that contribute to a person’s frequent mental distress. You have also seen how the percentage of frequent mental distress is distributed in the years from 2019 to 2021. Moreover, we have taken a glance at the change of the percentage of frequent mental distress from 2019 to 2021. You can clearly see in the graph ‘Plot of two year change in frequent mental distress %’ that the percentage of frequent mental distress has decreased for a very small amount of counties (Oglala Lakota, Mora County, Menominee County, Corson County, Falls Church County, Arlington County, Clay County, Ziebach County) . You will now build and run the regression models to make better assumptions of the factors which is affecting the percentage of frequent mental distress.</p>
+<table style="text-align:center">
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Statistic
+</td>
+<td>
+N
+</td>
+<td>
+Min
+</td>
+<td>
+Mean
+</td>
+<td>
+Median
+</td>
+<td>
+Max
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pct_mental_distress
+</td>
+<td>
+9,423
+</td>
+<td>
+8.003
+</td>
+<td>
+13.440
+</td>
+<td>
+13.237
+</td>
+<td>
+24.669
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pct_adult_obese
+</td>
+<td>
+9,423
+</td>
+<td>
+11.000
+</td>
+<td>
+32.798
+</td>
+<td>
+33.000
+</td>
+<td>
+58.900
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pct_insufficient_sleep
+</td>
+<td>
+9,423
+</td>
+<td>
+23.028
+</td>
+<td>
+34.299
+</td>
+<td>
+34.281
+</td>
+<td>
+49.056
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pct_uninsured_adults
+</td>
+<td>
+9,423
+</td>
+<td>
+2.543
+</td>
+<td>
+13.502
+</td>
+<td>
+12.468
+</td>
+<td>
+42.751
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+social_assoct
+</td>
+<td>
+9,423
+</td>
+<td>
+0.000
+</td>
+<td>
+12.342
+</td>
+<td>
+11.492
+</td>
+<td>
+70.621
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pct_housing_prob
+</td>
+<td>
+9,423
+</td>
+<td>
+0.000
+</td>
+<td>
+13.898
+</td>
+<td>
+13.363
+</td>
+<td>
+71.217
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+median_income_inthousand
+</td>
+<td>
+9,423
+</td>
+<td>
+22.679
+</td>
+<td>
+53.199
+</td>
+<td>
+50.949
+</td>
+<td>
+151.806
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+</table>
+<p>As you can see that the table summarizes all the statistics that have been used to build and run the regression models. The summary includes the number of observations, minimum, average, median and the maximum of our health outcome <code>pct_mental_distress</code> and also for all the other 6 health measures.</p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Sometimes we need to transform some of the variables to get better results from our regressions. That’s why we checked to see if any of the variables used in our regression model need any transformation. Usually using the logarithm of the variables which doesn’t fit the model well can improve the fit of the model by transforming the distribution to a more normally-shaped bell curve.
+As you can see in the graph that we have found that only Median Household Income in thousands and Percentage of Adult who are uninsured required the log transformation. You can see in the scatter plot that before the transformation that the points are more skewed and not fitting the line of best fit properly. But after the log transformation in both of the variables you can see that we obtain a regression line more adjusted and fitted throughout the data points. Thus this transformation will result in a better prediction model.</p>
+<p>The five different models using the same set of 6 explanatory variables are shown below:–</p>
+<p>Model 1 - Pooled OLS:</p>
+<p><span class="math display">\[
+\begin{align}
+y_{it} = \beta_0 +\beta_1 x_{1it} + \beta_2 x_{2it} + \beta_3 x_{3it} + \beta_4 x_{4it} + \beta_5 x_{5it} +
+\beta_6 x_{6it}  +  u_{it}
+\end{align}
+\]</span></p>
+<p>Model 2 - County fixed effect:</p>
+<p><span class="math display">\[
+\begin{align}
+y_{it} = \beta_0 +\beta_1 x_{1it} + \beta_2 x_{2it} + \beta_3 x_{3it} + \beta_4 x_{4it} + \beta_5 x_{5it} +
+\beta_6 x_{6it} + \sum_{g=2}^{3141}\alpha_gdS_g +  u_{it}
+\end{align}
+\]</span></p>
+<p>Model 3 - Year fixed effect:</p>
+<p><span class="math display">\[
+\begin{align}
+y_{it} = \beta_0 +\beta_1 x_{1it} + \beta_2 x_{2it} + \beta_3 x_{3it} + \beta_4 x_{4it} + \beta_5 x_{5it} +
+\beta_6 x_{6it} + \sum_{y=2019}^{2021}\delta_ydY_y  + u_{it}
+\end{align}
+\]</span></p>
+<p>Model 4 - County Fixed Effect and Year Fixed Effect:</p>
+<p><span class="math display">\[
+\begin{align}
+y_{it} = \beta_0 +\beta_1 x_{1it} + \beta_2 x_{2it} + \beta_3 x_{3it} + \beta_4 x_{4it} + \beta_5 x_{5it} +
+\beta_6 x_{6it}  + \sum_{g=2}^{3141}\alpha_gdS_g + \sum_{y=2019}^{2021}\delta_ydY_y  + u_{it}
+\end{align}
+\]</span></p>
+<p>Model 5 - State Year Fixed Effect:</p>
+<p><span class="math display">\[
+\begin{align}
+y_{it} = \beta_0 +\beta_1 x_{1it} + \beta_2 x_{2it} + \beta_3 x_{3it} + \beta_4 x_{4it} + \beta_5 x_{5it} +
+\beta_6 x_{6it}  + \sum_{gy=2}^{153}\sigma_{gy}dSY_{gy} + u_{it}
+\end{align}
+\]</span></p>
+<table style="text-align:center">
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="5">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="5" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="5">
+pct_mental_distress
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+<em>OLS</em>
+</td>
+<td colspan="4">
+<em>panel</em>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+<em></em>
+</td>
+<td colspan="4">
+<em>linear</em>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(Pooled OLS)
+</td>
+<td>
+(county-FE)
+</td>
+<td>
+(time-FE)
+</td>
+<td>
+(county-FE and time-FE)
+</td>
+<td>
+(statetime-FE)
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pct_adult_obese
+</td>
+<td>
+0.011<sup>***</sup>
+</td>
+<td>
+0.037<sup>***</sup>
+</td>
+<td>
+0.009<sup>***</sup>
+</td>
+<td>
+0.037<sup>***</sup>
+</td>
+<td>
+0.020<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+p = 0.0004
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.0002
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pct_insufficient_sleep
+</td>
+<td>
+0.340<sup>***</sup>
+</td>
+<td>
+0.391<sup>***</sup>
+</td>
+<td>
+0.235<sup>***</sup>
+</td>
+<td>
+0.391<sup>***</sup>
+</td>
+<td>
+0.114<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+log(pct_uninsured_adults)
+</td>
+<td>
+0.310<sup>***</sup>
+</td>
+<td>
+0.590<sup>***</sup>
+</td>
+<td>
+0.045<sup>*</sup>
+</td>
+<td>
+0.590<sup>***</sup>
+</td>
+<td>
+0.785<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.0002
+</td>
+<td>
+p = 0.093
+</td>
+<td>
+p = 0.0002
+</td>
+<td>
+p = 0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pct_housing_prob
+</td>
+<td>
+-0.007<sup>**</sup>
+</td>
+<td>
+-0.101<sup>***</sup>
+</td>
+<td>
+0.026<sup>***</sup>
+</td>
+<td>
+-0.101<sup>***</sup>
+</td>
+<td>
+0.050<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+p = 0.037
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+social_assoct
+</td>
+<td>
+-0.032<sup>***</sup>
+</td>
+<td>
+-0.049<sup>***</sup>
+</td>
+<td>
+-0.030<sup>***</sup>
+</td>
+<td>
+-0.049<sup>***</sup>
+</td>
+<td>
+-0.014<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+log(median_income_inthousand)
+</td>
+<td>
+-3.030<sup>***</sup>
+</td>
+<td>
+7.688<sup>***</sup>
+</td>
+<td>
+-4.382<sup>***</sup>
+</td>
+<td>
+7.688<sup>***</sup>
+</td>
+<td>
+-3.723<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+p = 0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+13.082<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+p = 0.000
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+9,423
+</td>
+<td>
+9,423
+</td>
+<td>
+9,423
+</td>
+<td>
+9,423
+</td>
+<td>
+9,423
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.690
+</td>
+<td>
+0.753
+</td>
+<td>
+0.745
+</td>
+<td>
+0.753
+</td>
+<td>
+0.719
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.690
+</td>
+<td>
+0.629
+</td>
+<td>
+0.744
+</td>
+<td>
+0.629
+</td>
+<td>
+0.714
+</td>
+</tr>
+<tr>
+<td colspan="6" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="5" style="text-align:right">
+<em>*p&lt;0.1;**p&lt;0.05;***p&lt;0.01</em>
+</td>
+</tr>
+</table>
+<p>The table shows all the coefficients of our 5 models from which we can draw some interesting conclusions. Firstly we can see that,if we hold all the other variables constant, a one percentage point increase in the <code>pct_adult_obese</code> which is the percentage of the people over age 20 have a BMI of over 30kg/m^2 yields, on average, leads to an increase of 0.020 percentage of people having frequent mental distress. This confirms what we have seen before that obesity has been extensively associated with frequent mental distress. Even though the percentage is minimal, we still consider this statistically significant because</p>
+<p>Secondly we can see from the table of state-time fixed effect that if we hold all the other variables constant, an increase of one percentage point in the <code>pct_insufficient_sleep</code> which is the percentage of adult people who are having less than 7 hours of sleep on average, also increases the percentage of frequent mental distress by 0.114 percentage. Again it’s pretty natural and also medically proven that if one doesn’t get enough sleep on average that person might have a lot of mental distress. We can also see that in a different way too that, a person have a lot of problems in getting sufficient sleep if the person is mentally distressed frequently. The link between inadequate sleep and frequent mental distress has been viewed historically as a symptom–disease association with sleep inadequacies deriving from preexisting mental distress <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. However, at least 1 study researched the opposite hypothesis, evaluating frequent mental distress leading to a lack of sleep <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<p>If we notice the third row of the table of state-time fixed effect that by holding all the other variables constant if the percentage point of the adults who are under the age 65 and doesn’t have a health insurance(<code>pct_uninsured_adults</code>) increases by 1% the percentage of frequent mental distress increases by 0.00785 percentage point on average. Here we can think about multiple interpretations as the number of increase is very small we can say that a person having frequent mental distress days doesn’t have anything to do with their health insurance. As mental illness doesn’t have much physical outcomes on health this interpretation seems more logical. Moreover we can also say that the people who have insurance are more likely to be careful about their health and conscious about their mental health too which can help them to no get mentally distressed. But as their are lot other factors which might play into having frequent mental distress this doesn’t agrees with our evidence.</p>
+<p>When it comes to the Percentage of households in the state-time fixed effect model we can see that with at least 1 of 4 housing problems: overcrowding, high housing costs, lack of kitchen facilities, or lack of plumbing facilities (<code>pct_housing_prob</code>) we can say that by holding all the other variables if the housing problem percentage point increases by one, the frequent mental distress percentage point increases by 0.050 point in average. People might say that it’s a matter of correlation as people with lower median household income tends to have the severe housing problem. But we can’t completely agree to that as for example same amount of household income in different cities might give you different type of options for housing. For instance, the same amount of income in Outgamie county and in Queens County might give one severe housing problem in Queens county not in the Outgamie county. So as a result we think that severe housing problem is rather a causation.</p>
+<p>When it comes to the effect of number of social associations per 10000 population on the percentage of frequent mental distress in the state-time fixed effect model, we can see that by holding other variables constant, one percentage point increase in <code>social_assoct</code>, results an average decrease of 0.014 in the percentage of frequent mental distress. The logical explanation which we think reasonable is that when a person has more options to get socially involved or be in some events which can easily divert his mind from the stress he is going through.</p>
+<p>Finally we observe that holding other variables constant in the state-time fixed effect model, 1% increase in the median household income in thousands results in an average decrease of 0.0372 percentage point in frequent mental distress. This seems a bit interesting to explain as an increase in the household income might help a household to give more opportunities of entertainment or good living conditions which may result in a decrease of mental distress. On the other hand, the median income in different counties as said before can bring different type of living. For example the quality of living with a 60K USD median income in Outgamie county compared to Queens County is not gonna be same. But we can also give a counter example that the household in bigger counties or more developed counties might have more opportunity to work on their mental health like more opportunities for entertainment like more park, lakes and so on. But in general an increase of income can lead a household to live in a better condition which results in a decrease of frequent mental distress.</p>
+<p>We can also see some interesting results in between our 5 different models. As you can see for the variable <code>pct_insufficient_sleep</code> the affect of percentage of insufficient sleep on frequent mental distress is higher when we didn’t count for the county fixed effects. The effects we can see in the model state-time FE are much lower than the effects in our county FE Time model. We think this difference in the coefficient or the effect on frequent mental distress is because of the variation between the counties. Only the county FE and time-FE accounts for the variation of the counties. On the other hand the statetime-FE doesn’t describe the variation of the counties in a state. This pattern can aslo be seen with our other health measures like severe housing problems and social associations, and median household income.</p>
+<style>
+.book .book-body .page-wrapper .page-inner {
+  max-width: 90%;
+}
+</style>
+
+</div>
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>Hanson JA, Huecker MR. Sleep deprivation. 2019. <a href="https://www.ncbi.nlm.nih.gov/books/NBK547676/" class="uri">https://www.ncbi.nlm.nih.gov/books/NBK547676/</a>. Accessed September 13, 2019.<a href="results.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Jackson CL; National Library of Medicine. Determinants of racial/ethnic disparities in disordered sleep and obesity. Sleep Health 2017;3(5):401–15.<a href="results.html#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conclusion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/munimn/Paneldataproject/edit/master/03-Results.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/munimn/Paneldataproject/blob/master/03-Results.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
